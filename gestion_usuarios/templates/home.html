@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+   <style>
+    body { font-family: Arial, sans-serif; font-size: 13px; background: #0d0d0d; color: #e0e0e0; margin: 0; padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
+ 
+    #barrasuperior { background: #111; border-bottom: 1px solid #222; height: 36px; display: flex; align-items: center; padding: 0 16px; }
+    #barrasuperior .marca { color: #f97316; font-weight: bold; font-size: 1.35rem; margin-right: auto; display: flex; align-items: center; gap: 6px; }
+    #barrasuperior nav a { color: #aaa; text-decoration: none; font-size: 12px; padding: 0 14px; height: 36px; display: inline-flex; align-items: center; border-left: 1px solid #222; }
+    #barrasuperior nav a:hover { color: #fff; background: #1a1a1a; }
+    #barrasuperior .areausuario { display: flex; align-items: center; gap: 8px; padding-left: 14px; border-left: 1px solid #222; color: #aaa; font-size: 12px; }
+ 
+    #contenedor { display: flex; flex: 1; }
+ 
+    #lateral { width: 175px; background: #111; border-right: 1px solid #1e1e1e; padding-top: 10px; display: flex; flex-direction: column; }
+    #lateral .titulo { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #aaa; padding: 12px 14px 4px; }
+    #lateral ul { list-style: none; margin: 0; padding: 0; }
+    #lateral ul li a { display: flex; align-items: center; gap: 9px; padding: 8px 14px; color: #aaa; text-decoration: none; font-size: 13px; border-left: 3px solid transparent; }
+    #lateral ul li a:hover { background: #1a1a1a; color: #fff; }
+    #lateral ul li a.activo { background: #1a1a1a; color: #f97316; border-left-color: #f97316; }
+    #lateral ul li a i { width: 16px; height: 16px; }
+    #lateral .salir { margin-top: auto; border-top: 1px solid #1e1e1e; }
+ 
+    #principal { flex: 1; padding: 20px 24px; background: #f1f1f1; }
+ 
+    .encabezado { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .encabezado h1 { font-size: 1.35rem; font-weight: bold; color: #1a1a1a; margin: 0; }
+ 
+    .boton-crear { background: #f97316; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+    .boton-crear:hover { background: #ea6c0a; }
+    .boton-editar { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 6px 14px; font-size: 12px; color: #333; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+    .boton-editar:hover { border-color: #f97316; color: #f97316; }
+    .boton-eliminar { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 6px 14px; border-radius: 4px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+    .boton-eliminar:hover { background: #ef4444; color: #fff; }
+ 
+    .buscador { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+    .cajabusqueda { display: flex; gap: 4px; }
+    .cajabusqueda input { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 5px 10px; font-size: 12px; color: #333; width: 200px; }
+    .cajabusqueda input::placeholder { color: #999; }
+ 
+    .tabla-contenedor { background: #fff; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #f3f4f6; }
+    th { text-align: left; padding: 9px 13px; font-size: 11px; font-weight: bold; color: #555; border-bottom: 1px solid #ddd; text-transform: uppercase; letter-spacing: .05em; }
+    td { padding: 9px 13px; border-top: 1px solid #f0f0f0; vertical-align: middle; color: #1a1a1a; font-size: 13px; }
+    tr:hover td { background: #fafafa; }
+ 
+    .celda-usuario { display: flex; align-items: center; gap: 10px; }
+    .icono-avatar { color: #aaa; display: flex; align-items: center; }
+ 
+    .estado { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: #333; }
+    .estado i { width: 13px; height: 13px; }
+    .estado.activo i, .estado.verificada i { color: #22c55e; }
+    .estado.inactivo i { color: #ef4444; }
+    .estado.pendiente i { color: #9ca3af; }
+  </style>
+<body>
+
+<div id="barrasuperior">
+  <div class="marca">
+    <i data-lucide="car" style="width:20px;height:20px;"></i>
+    Sistema - Concesionario de carros
+  </div>
+  <nav>
+    <a href="#">Inventario</a>
+    <a href="#">Ventas</a>
+    <a href="#">Historial</a>
+    <a href="#">Facturacion</a>
+  </nav>
+  <div class="areausuario">
+    <i data-lucide="user-circle" style="width:22px;height:22px;color:#aaa;"></i>
+    Admin
+  </div>
+</div>
+
+<div id="contenedor">
+
+  <nav id="lateral">
+    <div class="titulo">Usuarios</div>
+    <ul>
+      <li><a href="#" class="activo"><i data-lucide="users"></i> Todos los usuarios</a></li>
+      <li><a href="#"><i data-lucide="user-plus"></i> Nuevo usuario</a></li>
+      <li><a href="/usuario/roles/" ><i data-lucide="shield"></i> Roles</a></li>
+      <li><a href="#"><i data-lucide="key"></i> Permisos</a></li>
+    </ul>
+    <div class="salir">
+      <ul>
+        <li><a href="#"><i data-lucide="log-out"></i> Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="principal">
+
+    <div class="encabezado">
+      <h1>Usuarios</h1>
+      <a href="#" class="boton-crear"><i data-lucide="plus" style="width:13px;height:13px;"></i> Crear usuario</a>
+      <a href="#" class="boton-editar"><i data-lucide="pencil" style="width:13px;height:13px;"></i> Editar usuario</a>
+      <a href="#" class="boton-eliminar"><i data-lucide="trash-2" style="width:13px;height:13px;"></i> Eliminar usuario</a>
+    </div>
+
+    <div class="buscador">
+      <div class="cajabusqueda">
+        <input type="text" placeholder="Buscar usuario..."/>
+        <button class="boton-editar">Buscar</button>
+      </div>
+    </div>
+
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th><input type="checkbox"/></th>
+            <th>Usuario</th>
+            <th>Nombre completo</th>
+            <th>Correo</th>
+            <th>Documento</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Cuenta</th>
+          </tr>
+        </thead>
+        <tbody>
+  {% for usuario in lista_usuarios %}
+  <tr>
+    <td><input type="checkbox"/></td>
+    <td>
+      <div class="celda-usuario">
+        <div class="icono-avatar"><i data-lucide="user-circle" style="width:20px;height:20px;"></i></div>
+        {{ usuario.tercero.nombre }}
+      </div>
+    </td>
+    <td>{{ usuario.tercero.nombre }}</td>
+    <td>{{ usuario.tercero.email }}</td>
+    <td>{{ usuario.tercero.tipo_documento }} {{ usuario.tercero.numero_documento }}</td>
+    <td>{{ usuario.rol.nombre }}</td>
+    <td>
+      {% if usuario.habilitado %}
+        <span class="estado activo"><i data-lucide="check-circle"></i> Activo</span>
+      {% else %}
+        <span class="estado inactivo"><i data-lucide="x-circle"></i> Inactivo</span>
+      {% endif %}
+    </td>
+    <td>
+      {% if usuario.cuenta_activa %}
+        <span class="estado verificada"><i data-lucide="check-circle"></i> Verificada</span>
+      {% else %}
+        <span class="estado pendiente"><i data-lucide="clock"></i> Pendiente</span>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
