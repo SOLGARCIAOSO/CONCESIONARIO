@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clientes</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 13px; background: #0d0d0d; color: #e0e0e0; margin: 0; padding: 0; }
+    #barrasuperior { background: #111; border-bottom: 1px solid #222; min-height: 40px; display: flex; align-items: center; padding: 0 18px; gap: 16px; }
+    #barrasuperior .marca { color: #f97316; font-weight: bold; font-size: 1.1rem; margin-right: auto; }
+    #barrasuperior a { color: #aaa; text-decoration: none; font-size: 12px; }
+    #barrasuperior a:hover { color: #fff; }
+    #principal { padding: 24px; background: #f1f1f1; min-height: calc(100vh - 88px); }
+    .encabezado { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .encabezado h1 { color: #1a1a1a; font-size: 1.35rem; margin: 0; }
+    .boton { background: #f97316; color: #fff; border: 1px solid #f97316; padding: 7px 12px; border-radius: 4px; text-decoration: none; font-size: 12px; cursor: pointer; }
+    .boton.secundario { background: #fff; color: #333; border-color: #ccc; }
+    .boton.eliminar { background: transparent; color: #ef4444; border-color: #ef4444; }
+    .tabla-contenedor { background: #fff; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: #f3f4f6; }
+    th { text-align: left; padding: 9px 13px; font-size: 11px; font-weight: bold; color: #555; border-bottom: 1px solid #ddd; text-transform: uppercase; letter-spacing: .05em; }
+    td { padding: 9px 13px; border-top: 1px solid #f0f0f0; color: #1a1a1a; }
+    .estado { color: #22c55e; font-weight: bold; }
+    .estado.inactivo { color: #ef4444; }
+    .acciones { display: flex; gap: 8px; }
+    .vacio { color: #777; padding: 18px; background: #fff; border: 1px solid #ddd; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<div id="barrasuperior">
+  <div class="marca">Sistema - Concesionario de carros</div>
+  <a href="/clientes-inventario/home/">Resumen</a>
+  <a href="/clientes-inventario/inventario/">Inventario</a>
+  <a href="/clientes-inventario/reservas/">Reservas</a>
+</div>
+<div id="principal">
+  <div class="encabezado">
+    <h1>Clientes</h1>
+    <a class="boton" href="/clientes-inventario/clientes/crear/">Crear cliente</a>
+  </div>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="vacio">{{message}}</div>
+    {% endfor %}
+  {% endif %}
+  {% if lista_clientes %}
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Correo</th>
+          <th>Telefono</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+          <td>{{cliente.nombre}}</td>
+          <td>{{cliente.documento}}</td>
+          <td>{{cliente.email}}</td>
+          <td>{{cliente.telefono}}</td>
+          <td>{% if cliente.activo %}<span class="estado">Activo</span>{% else %}<span class="estado inactivo">Inactivo</span>{% endif %}</td>
+          <td>
+            <div class="acciones">
+              <a class="boton secundario" href="/clientes-inventario/clientes/editar/{{cliente.id}}/">Editar</a>
+              <a class="boton eliminar" href="/clientes-inventario/clientes/eliminar/{{cliente.id}}/">Eliminar</a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="vacio">No hay clientes registrados.</div>
+  {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eliminar</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f1f1f1; margin: 0; color: #1a1a1a; font-size: 13px; }
+    #barrasuperior { background: #111; border-bottom: 2px solid #f97316; min-height: 40px; display: flex; align-items: center; padding: 0 18px; }
+    #barrasuperior .marca { color: #f97316; font-weight: bold; }
+    #principal { padding: 24px; }
+    .caja { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 18px; max-width: 520px; }
+    h1 { font-size: 1.35rem; margin: 0 0 10px; }
+    p { color: #555; margin-bottom: 16px; }
+    .acciones { display: flex; gap: 8px; }
+    .boton { background: #ef4444; color: #fff; border: 1px solid #ef4444; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 12px; cursor: pointer; }
+    .boton.secundario { background: #fff; color: #333; border-color: #ccc; }
+  </style>
+</head>
+<body>
+<div id="barrasuperior"><div class="marca">Sistema - Concesionario de carros</div></div>
+<div id="principal">
+  <div class="caja">
+    <h1>Confirmar eliminacion</h1>
+    <p>Esta seguro de eliminar: <strong>{{objeto}}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="acciones">
+        <button class="boton" type="submit">Eliminar</button>
+        {% if volver == 'clientes' %}
+          <a class="boton secundario" href="/clientes-inventario/clientes/">Cancelar</a>
+        {% else %}
+          <a class="boton secundario" href="/clientes-inventario/inventario/">Cancelar</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

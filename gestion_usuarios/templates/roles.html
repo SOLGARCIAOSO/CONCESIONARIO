@@ -97,12 +97,12 @@
         <tbody>
           {% for rol in lista_roles %}
           <tr>
-            <td>{{ rol.nombre }}</td>
+            <td>{{rol.nombre}}</td>
             <td>
               {% if rol.usuarios.count == 0 %}
                 <span class="etiqueta-vacia"><i data-lucide="alert-circle"></i> Sin usuarios</span>
               {% else %}
-                {{ rol.usuarios.count }} usuario{% if rol.usuarios.count > 1 %}s{% endif %}
+                {{rol.usuarios.count}} usuario{% if rol.usuarios.count > 1 %}s{% endif %}
               {% endif %}
             </td>
            <td>
@@ -111,7 +111,7 @@
               <div class="lista-permisos">
                 {% if rol.permisos.exists %}
                   {% for permiso in rol.permisos.all %}
-                    <span><i data-lucide="check"></i> {{ permiso.nombre }}</span>
+                    <span><i data-lucide="check"></i> {{permiso.nombre}}</span>
                   {% endfor %}
                 {% else %}
                   <span class="sin-permisos">Sin permisos asignados</span>

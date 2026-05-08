@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserva</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f1f1f1; margin: 0; color: #1a1a1a; font-size: 13px; }
+    #barrasuperior { background: #111; border-bottom: 2px solid #f97316; min-height: 40px; display: flex; align-items: center; padding: 0 18px; }
+    #barrasuperior .marca { color: #f97316; font-weight: bold; }
+    #principal { padding: 24px; }
+    h1 { font-size: 1.35rem; margin: 0 0 16px; }
+    form { background: #fff; border: 1px solid #ddd; border-radius: 4px; padding: 18px; max-width: 680px; }
+    .campo { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    label { font-weight: bold; color: #333; font-size: 12px; }
+    select { border: 1px solid #ccc; border-radius: 4px; padding: 8px 10px; font-size: 13px; }
+    .acciones { display: flex; gap: 8px; }
+    .boton { background: #f97316; color: #fff; border: 1px solid #f97316; padding: 8px 14px; border-radius: 4px; text-decoration: none; font-size: 12px; cursor: pointer; }
+    .boton.secundario { background: #fff; color: #333; border-color: #ccc; }
+  </style>
+</head>
+<body>
+<div id="barrasuperior"><div class="marca">Sistema - Concesionario de carros</div></div>
+<div id="principal">
+  <h1>Crear reserva</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="campo">
+      <label>Cliente</label>
+      <select name="cliente" required>
+        {% for cliente in clientes %}
+          <option value="{{cliente.id}}">{{cliente.nombre}} - {{cliente.documento}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="campo">
+      <label>Vehiculo</label>
+      <select name="vehiculo" required>
+        {% for vehiculo in vehiculos %}
+          <option value="{{vehiculo.id}}">{{vehiculo.marca}} {{vehiculo.modelo}} - {{vehiculo.placa}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="acciones">
+      <button class="boton" type="submit">Guardar</button>
+      <a class="boton secundario" href="/clientes-inventario/reservas/">Cancelar</a>
+    </div>
+  </form>
+</div>
+</body>
+</html>
