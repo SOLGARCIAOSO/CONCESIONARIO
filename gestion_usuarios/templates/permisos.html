@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gestion_usuarios/permisos.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+    <div class="encabezado">
+        <h1>Permisos</h1>
+    </div>
+
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Permiso</th>
+                    <th>Módulo</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gestionar usuarios</td>
+                    <td>Usuarios</td>
+                    <td>
+                        <span class="permiso-activo"><i data-lucide="check-circle"></i> Activo</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Registrar ventas</td>
+                    <td>Ventas</td>
+                    <td>
+                        <span class="permiso-activo"><i data-lucide="check-circle"></i> Activo</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Eliminar reservas</td>
+                    <td>Reservas</td>
+                    <td>
+                        <span class="permiso-inactivo"><i data-lucide="x-circle"></i> Inactivo</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

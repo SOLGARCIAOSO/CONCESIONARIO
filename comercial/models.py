@@ -1,8 +1,9 @@
 
 from django.db import models
 
+
  
-class Cotizacion(models.Model):
+class Cotizaciones(models.Model):
   id_cotizacion = models.AutoField(primary_key=True)
   vehiculo_id = models.IntegerField()
   cliente_id = models.IntegerField()
@@ -17,7 +18,8 @@ class Cotizacion(models.Model):
     return f"Cotización: {self.num_cotizacion} {self.cliente_id}"
   
 
-class Reserva(models.Model):
+class Reservas(models.Model):
+  id_reserva = models.AutoField(primary_key=True)
   vehiculo_id = models.IntegerField()
   cliente_id = models.IntegerField()
   fecha_reserva = models.DateTimeField(auto_now_add=True)
@@ -29,8 +31,8 @@ class Reserva(models.Model):
     return f"Reserva {self.vehiculo_id} -  {self.cliente_id}"
   
 
-class Venta(models.Model):
-  id_venta = models.AutoField(primary_key=True)
+class Ventas(models.Model):
+  id_venta = models.IntegerField(primary_key=True)
   vehiculo_id = models.IntegerField()
   cliente_id = models.IntegerField()
   vendedor_id = models.IntegerField()

@@ -1,0 +1,51 @@
+.buscador {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.cajabusqueda {
+    display: flex;
+    gap: 4px;
+}
+
+.cajabusqueda input {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    color: #333;
+    width: 200px;
+}
+
+.cajabusqueda input::placeholder {
+    color: #999;
+}
+
+.celda-usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icono-avatar {
+    color: #aaa;
+    display: flex;
+    align-items: center;
+}
+
+.estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #333;
+}
+
+.estado i {
+    width: 13px;
+    height: 13px;
+}
+
+

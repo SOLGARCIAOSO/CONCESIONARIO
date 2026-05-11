@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <title>{% block title %}PANEL COMERCIAL{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'comercial/css/style.css' %}">
+</head>
+<body>
+
+
+    <nav>
+        <a href="/comercial/">Inicio</a>
+        <a href="{% url 'lista_cotizaciones' %}">Cotizaciones</a>
+        <a href="{% url 'lista_reservas' %}">Reservas</a>
+        <a href="{% url 'lista_ventas' %}">Ventas</a>
+        
+    </nav>
+
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
+
+
