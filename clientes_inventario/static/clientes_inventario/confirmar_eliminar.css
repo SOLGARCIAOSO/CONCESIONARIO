@@ -1,0 +1,32 @@
+.caja-eliminar {
+  max-width: 480px;
+  background: var(--blanco);
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  padding: 28px;
+  box-shadow: var(--sombra);
+}
+
+.caja-eliminar .icono-alerta {
+  width: 48px; height: 48px;
+  background: #fef2f2;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 16px;
+  color: var(--rojo);
+}
+.caja-eliminar .icono-alerta svg { width: 24px; height: 24px; }
+
+.caja-eliminar h1 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--texto);
+}
+.caja-eliminar p {
+  color: var(--subtexto);
+  margin-bottom: 22px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.caja-eliminar strong { color: var(--texto); }

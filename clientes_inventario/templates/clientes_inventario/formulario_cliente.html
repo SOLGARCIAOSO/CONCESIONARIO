@@ -1,0 +1,74 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}{% if cliente %}Editar{% else %}Crear{% endif %} Cliente{% endblock %}
+{% block nav_clientes %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/formulario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>{% if cliente %}Editar cliente{% else %}Nuevo cliente{% endif %}</h1>
+    <a class="btn btn-secundario" href="/clientes-inventario/clientes/">
+      <i data-lucide="arrow-left"></i> Volver a clientes
+    </a>
+  </div>
+
+  <div class="contenedor-formulario">
+    <form method="POST" class="formulario-card">
+      {% csrf_token %}
+
+      <div class="separador-seccion">Datos personales</div>
+
+      <div class="grupo-campo">
+        <label>Nombre completo</label>
+        <input type="text" name="nombre" value="{{ cliente.nombre }}" placeholder="Ej: Juan García" required>
+      </div>
+
+      <div class="grupo-doble">
+        <div class="grupo-campo">
+          <label>Documento</label>
+          <input type="text" name="documento" value="{{ cliente.documento }}" placeholder="Ej: 1234567890" required>
+        </div>
+        <div class="grupo-campo">
+          <label>Teléfono</label>
+          <input type="text" name="telefono" value="{{ cliente.telefono }}" placeholder="Ej: 3001234567">
+        </div>
+      </div>
+
+      <div class="separador-seccion">Contacto</div>
+
+      <div class="grupo-campo">
+        <label>Correo electrónico</label>
+        <input type="email" name="email" value="{{ cliente.email }}" placeholder="Ej: juan@correo.com" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label>Dirección</label>
+        <input type="text" name="direccion" value="{{ cliente.direccion }}" placeholder="Ej: Cra 10 # 20-30, Bogotá">
+      </div>
+
+      <div class="grupo-campo checkbox-campo">
+        <label>
+          <input type="checkbox" name="activo" {% if not cliente or cliente.activo %}checked{% endif %}>
+          Cliente activo
+        </label>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="btn btn-primario">
+          <i data-lucide="save"></i>
+          {% if cliente %}Guardar cambios{% else %}Crear cliente{% endif %}
+        </button>
+        <a href="/clientes-inventario/clientes/" class="btn btn-secundario">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

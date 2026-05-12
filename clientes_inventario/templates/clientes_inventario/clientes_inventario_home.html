@@ -1,0 +1,112 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}Resumen{% endblock %}
+{% block nav_home %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Resumen general</h1>
+  </div>
+
+  <div class="resumen">
+    <div class="tarjeta">
+      <div class="t-label">Clientes</div>
+      <div class="t-valor">{{ total_clientes }}</div>
+      <div class="t-sub">registrados</div>
+      <div class="t-icono"><i data-lucide="users"></i></div>
+    </div>
+    <div class="tarjeta">
+      <div class="t-label">Vehículos</div>
+      <div class="t-valor">{{ total_vehiculos }}</div>
+      <div class="t-sub">en inventario</div>
+      <div class="t-icono"><i data-lucide="car"></i></div>
+    </div>
+    <div class="tarjeta">
+      <div class="t-label">Disponibles</div>
+      <div class="t-valor">{{ vehiculos_disponibles }}</div>
+      <div class="t-sub">para venta</div>
+      <div class="t-icono"><i data-lucide="check-circle"></i></div>
+    </div>
+    <div class="tarjeta">
+      <div class="t-label">Reservas activas</div>
+      <div class="t-valor">{{ total_reservas }}</div>
+      <div class="t-sub">en curso</div>
+      <div class="t-icono"><i data-lucide="calendar-check"></i></div>
+    </div>
+  </div>
+
+  <div class="columnas">
+    <div class="panel">
+      <div class="panel-header">
+        <i data-lucide="users"></i> Últimos clientes
+      </div>
+      {% if ultimos_clientes %}
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Documento</th>
+            <th>Correo</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cliente in ultimos_clientes %}
+          <tr>
+            <td>{{ cliente.nombre }}</td>
+            <td>{{ cliente.documento }}</td>
+            <td>{{ cliente.email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="vacio">No hay clientes registrados.</div>
+      {% endif %}
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <i data-lucide="car"></i> Últimos vehículos
+      </div>
+      {% if ultimos_vehiculos %}
+      <table>
+        <thead>
+          <tr>
+            <th>Vehículo</th>
+            <th>Placa</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for vehiculo in ultimos_vehiculos %}
+          <tr>
+            <td>{{ vehiculo.marca }} {{ vehiculo.modelo }}</td>
+            <td>{{ vehiculo.placa }}</td>
+            <td>
+              {% if vehiculo.estado == 'DISPONIBLE' %}
+                <span class="chip chip-verde"><i data-lucide="check-circle"></i> Disponible</span>
+              {% elif vehiculo.estado == 'RESERVADO' %}
+                <span class="chip chip-naranja"><i data-lucide="clock"></i> Reservado</span>
+              {% else %}
+                <span class="chip chip-gris"><i data-lucide="x-circle"></i> Vendido</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="vacio">No hay vehículos registrados.</div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

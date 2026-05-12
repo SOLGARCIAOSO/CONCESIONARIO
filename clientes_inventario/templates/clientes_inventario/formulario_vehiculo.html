@@ -1,0 +1,81 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}{% if vehiculo %}Editar{% else %}Crear{% endif %} Vehículo{% endblock %}
+{% block nav_inventario %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/formulario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>{% if vehiculo %}Editar vehículo{% else %}Nuevo vehículo{% endif %}</h1>
+    <a class="btn btn-secundario" href="/clientes-inventario/inventario/">
+      <i data-lucide="arrow-left"></i> Volver al inventario
+    </a>
+  </div>
+
+  <div class="contenedor-formulario">
+    <form method="POST" class="formulario-card">
+      {% csrf_token %}
+
+      <div class="separador-seccion">Información del vehículo</div>
+
+      <div class="grupo-doble">
+        <div class="grupo-campo">
+          <label>Marca</label>
+          <input type="text" name="marca" value="{{ vehiculo.marca }}" placeholder="Ej: Toyota" required>
+        </div>
+        <div class="grupo-campo">
+          <label>Modelo</label>
+          <input type="text" name="modelo" value="{{ vehiculo.modelo }}" placeholder="Ej: Corolla" required>
+        </div>
+      </div>
+
+      <div class="grupo-doble">
+        <div class="grupo-campo">
+          <label>Año</label>
+          <input type="number" name="anio" value="{{ vehiculo.anio }}" placeholder="Ej: 2023" min="1900" max="2100" required>
+        </div>
+        <div class="grupo-campo">
+          <label>Color</label>
+          <input type="text" name="color" value="{{ vehiculo.color }}" placeholder="Ej: Blanco" required>
+        </div>
+      </div>
+
+      <div class="grupo-doble">
+        <div class="grupo-campo">
+          <label>Placa</label>
+          <input type="text" name="placa" value="{{ vehiculo.placa }}" placeholder="Ej: ABC123" required>
+        </div>
+        <div class="grupo-campo">
+          <label>Precio (COP)</label>
+          <input type="number" name="precio" value="{{ vehiculo.precio }}" placeholder="Ej: 45000000" min="0" required>
+        </div>
+      </div>
+
+      <div class="grupo-campo">
+        <label>Estado</label>
+        <select name="estado">
+          {% for valor, texto in estados %}
+            <option value="{{ valor }}" {% if vehiculo.estado == valor %}selected{% endif %}>{{ texto }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="btn btn-primario">
+          <i data-lucide="save"></i>
+          {% if vehiculo %}Guardar cambios{% else %}Crear vehículo{% endif %}
+        </button>
+        <a href="/clientes-inventario/inventario/" class="btn btn-secundario">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

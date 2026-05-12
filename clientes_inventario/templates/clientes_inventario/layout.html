@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Concesionario{% endblock %} — Sistema</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="{% static 'clientes_inventario/layout.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div id="barrasuperior">
+  <div class="marca">
+    <i data-lucide="car" style="width:18px;height:18px;"></i>
+    Concesionario de Carros
+  </div>
+  <nav>
+    <a href="/clientes-inventario/home/">Resumen</a>
+    <a href="/clientes-inventario/inventario/">Inventario</a>
+    <a href="/clientes-inventario/clientes/">Clientes</a>
+    <a href="/clientes-inventario/reservas/">Reservas</a>
+  </nav>
+  <div class="areausuario">
+    <i data-lucide="user-circle" style="width:20px;height:20px;"></i>
+    Admin
+  </div>
+</div>
+
+<div id="contenedor">
+
+  <nav id="lateral">
+    <div class="seccion-titulo">Gestión</div>
+    <ul>
+      <li>
+        <a href="/clientes-inventario/home/" {% block nav_home %}{% endblock %}>
+          <i data-lucide="layout-dashboard"></i> Resumen
+        </a>
+      </li>
+      <li>
+        <a href="/clientes-inventario/inventario/" {% block nav_inventario %}{% endblock %}>
+          <i data-lucide="car"></i> Inventario
+        </a>
+      </li>
+      <li>
+        <a href="/clientes-inventario/clientes/" {% block nav_clientes %}{% endblock %}>
+          <i data-lucide="users"></i> Clientes
+        </a>
+      </li>
+      <li>
+        <a href="/clientes-inventario/reservas/" {% block nav_reservas %}{% endblock %}>
+          <i data-lucide="calendar-check"></i> Reservas
+        </a>
+      </li>
+    </ul>
+    <div class="salir">
+      <ul>
+        <li><a href="#"><i data-lucide="log-out"></i> Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>
