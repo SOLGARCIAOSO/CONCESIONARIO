@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gestion_usuarios/editar_usuario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+    <div class="encabezado">
+        <h1>Editar usuario</h1>
+        <button type="button" id="habilitar-edicion" class="boton-editar">
+            <i data-lucide="pencil"></i>
+            Editar datos
+        </button>
+        <a href="/usuario/home/" class="boton-eliminar">Cancelar</a>
+    </div>
+
+    <div class="contenedor-formulario">
+        <form method="POST" class="formulario-usuario">
+            {% csrf_token %}
+
+            <div class="grupo-campo">
+                <label>Nombre completo</label>
+                <input type="text" name="nombre" value="{{ usuario.tercero.nombre }}" disabled required>
+            </div>
+
+            <div class="grupo-doble">
+                <div class="grupo-campo">
+                    <label>Tipo documento</label>
+                    <select name="tipo_documento" disabled required>
+                        <option value="CC" {% if usuario.tercero.tipo_documento == 'CC' %}selected{% endif %}>Cédula de Ciudadanía</option>
+                        <option value="CE" {% if usuario.tercero.tipo_documento == 'CE' %}selected{% endif %}>Cédula de Extranjería</option>
+                        <option value="NIT" {% if usuario.tercero.tipo_documento == 'NIT' %}selected{% endif %}>NIT</option>
+                        <option value="PAS" {% if usuario.tercero.tipo_documento == 'PAS' %}selected{% endif %}>Pasaporte</option>
+                    </select>
+                </div>
+
+                <div class="grupo-campo">
+                    <label>Número documento</label>
+                    <input type="text" name="numero_documento" value="{{ usuario.tercero.numero_documento }}" disabled required>
+                </div>
+            </div>
+
+            <div class="grupo-doble">
+                <div class="grupo-campo">
+                    <label>Teléfono</label>
+                    <input type="text" name="telefono" value="{{ usuario.tercero.telefono }}" disabled>
+                </div>
+                <div class="grupo-campo">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" value="{{ usuario.tercero.direccion }}" disabled>
+                </div>
+            </div>
+
+            <div class="grupo-campo">
+                <label>Correo electrónico</label>
+                <input type="email" name="email" value="{{ usuario.tercero.email }}" disabled required>
+            </div>
+
+            <div class="grupo-campo">
+                <label>Rol</label>
+                <select name="rol" disabled required>
+                    {% for rol in lista_roles %}
+                    <option value="{{ rol.id }}" {% if usuario.rol.id == rol.id %}selected{% endif %}>
+                        {{ rol.get_nombre_display }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="grupo-campo checkbox-campo">
+                <label>
+                    <input type="checkbox" name="habilitado" {% if usuario.habilitado %}checked{% endif %} disabled>
+                    Usuario habilitado
+                </label>
+            </div>
+
+            <div class="grupo-campo checkbox-campo">
+                <label>
+                    <input type="checkbox" name="cuenta_activa" {% if usuario.cuenta_activa %}checked{% endif %} disabled>
+                    Verificada
+                </label>
+            </div>
+
+            <div class="acciones-formulario">
+                <button type="submit" class="boton-crear" id="guardar-cambios" style="display:none;">
+                    <i data-lucide="save"></i>
+                    Guardar cambios
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const botonHabilitar = document.getElementById('habilitar-edicion');
+    const botonGuardar = document.getElementById('guardar-cambios');
+
+    botonHabilitar.addEventListener('click', () => {
+        const campos = document.querySelectorAll('.formulario-usuario input, .formulario-usuario select');
+        campos.forEach(campo => { campo.disabled = false; });
+        botonGuardar.style.display = 'inline-flex';
+        botonHabilitar.style.display = 'none';
+    });
+</script>
+{% endblock %}

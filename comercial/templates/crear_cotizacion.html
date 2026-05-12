@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nueva Cotizacion
+{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <div class="page-header">
+        <h1>Nueva <span>Cotizacion</span></h1>
+
+        <div class="meta">
+            Registro de Cotizaciones
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <p>
+                <label>{{ form.id_cotizacion.label }}</label>
+                {{ form.id_cotizacion }}
+            </p>
+
+            <p>
+                <label>{{ form.vehiculo_id.label }}</label>
+                {{ form.vehiculo_id }}
+            </p>
+
+            <p>
+                <label>{{ form.cliente_id.label }}</label>
+                {{ form.cliente_id }}
+            </p>
+
+            <p>
+                <label>{{ form.num_cotizacion.label }}</label>
+                {{ form.num_cotizacion }}
+            </p>
+
+            <p>
+                <label>{{ form.fecha_creacion.label }}</label>
+                {{ form.fecha_creacion }}
+            </p>
+
+            <p>
+                <label>{{ form.fecha_vencimiento.label }}</label>
+                {{ form.fecha_vencimiento }}
+            </p>
+
+            <p>
+                <label>{{ form.precio_base.label }}</label>
+                {{ form.precio_base }}
+            </p>
+
+            <p>
+                <label>{{ form.total.label }}</label>
+                {{ form.total }}
+            </p>
+
+            <p>
+                <label>{{ form.estado.label }}</label>
+                {{ form.estado }}
+            </p>
+
+            <button type="submit">
+                Guardar
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

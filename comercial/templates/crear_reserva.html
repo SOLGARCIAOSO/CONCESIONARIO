@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Crear Reserva
+{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <div class="page-header">
+        <h1>Nueva <span>Reserva</span></h1>
+
+        <div class="meta">
+            Registro de reservas
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+
+        <form method="POST">
+
+            {% csrf_token %}
+            
+            <p>
+                <label>{{ form.id_reserva.label }}</label>
+                {{ form.id_reserva }}
+            </p>
+
+            <p>
+                <label>{{ form.vehiculo_id.label }}</label>
+                {{ form.vehiculo_id }}
+            </p>
+
+            <p>
+                <label>{{ form.cliente_id.label }}</label>
+                {{ form.cliente_id }}
+            </p>
+
+            <p>
+                <label>{{ form.fecha_reserva.label }}</label>
+                {{ form.fecha_reserva }}
+            </p>
+
+            <p>
+                <label>{{ form.monto_apartado.label }}</label>
+                {{ form.monto_apartado }}
+            </p>
+
+            <p>
+                <label>{{ form.activa.label }}</label>
+                {{ form.activa }}
+            </p>
+
+            <p>
+                <label>{{ form.notas.label }}</label>
+                {{ form.notas }}
+            </p>
+
+
+            <button type="submit">
+                Guardar Reserva
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

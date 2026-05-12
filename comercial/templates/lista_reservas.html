@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Reservas
+{% endblock %}
+
+{% block content %}
+
+  <meta charset="UTF-8" />
+  <title>Reservas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Lista de <span>Reservas</span></h1>
+      <div class="meta"><br>Gestion de reservas activas</div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Reserva</th>
+            <th>Vehiculo</th>
+            <th>Cliente</th>
+            <th>Fecha reserva</th>
+            <th>Monto apartado</th>
+            <th>Activa</th>
+            <th>Notas</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in reservas %}
+          <tr>
+            <td>{{ r.reserva_id }}</td>
+            <td>{{ r.vehiculo_id }}</td>
+            <td>{{ r.cliente_id }}</td>
+            <td>{{ r.fecha_reserva }}</td>
+            <td><span class="amount">{{ r.monto_apartado }}</span></td>
+            <td><span class="amount">{% if r.activa %}Si{% else %}No{% endif %}</span></td>
+            <td class="notas">{{ r.notas}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+.permiso-activo,
+.permiso-inactivo {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+}
+
+.permiso-activo i,
+.permiso-inactivo i {
+    width: 14px;
+    height: 14px;
+}

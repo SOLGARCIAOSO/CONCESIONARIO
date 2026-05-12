@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Ventas
+{% endblock %}
+
+{% block content %}
+
+  <meta charset="UTF-8" />
+  <title>Ventas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <div class="page">
+    <div class="page-header">
+      <h1>Lista de <span>Ventas</span></h1>
+      <div class="meta"><br>Gestion de Ventas</div>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>ID Venta</th>
+            <th>Vehiculo</th>
+            <th>Cliente</th>
+            <th>Vendedor</th>
+            <th>Fecha</th>
+            <th>Precio</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>N Factura</th>
+            <th>Tipo de Pago</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in ventas %}
+          <tr>
+            <td>{{ v.id_venta }}</td>
+            <td>{{ v.vehiculo_id }}</td>
+            <td>{{ v.cliente_id }}</td>
+            <td>{{ v.vendedor_id }}</td>
+            <td>{{ v.fecha }}</td>
+            <td><span class="amount">{{ v.precio }}</span></td>
+            <td><span class="amount">{{ v.total }}</span></td>
+            <td>{{ v.estado }}</td>
+            <td>{{ v.num_factura }}</td>
+            <td>{{ v.tipo_de_pago }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="10">No hay ventas registradas.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+{% endblock %}
