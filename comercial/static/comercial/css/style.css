@@ -1,0 +1,121 @@
+
+    body { font-family: sans-serif; margin: 0; background: #f5f5f5; color: #222; }
+    nav { background: #fff; border-bottom: 1px solid #e0e0e0; padding: 12px 24px; display: flex; gap: 16px; }
+    nav a { text-decoration: none; color: #984620; font-weight: bold; }
+    .page { padding: 24px; }
+    h1 { font-size: 20px; margin-bottom: 5px; text-align: center; }
+    .subtitle { font-size: 13px; color: #666; margin-bottom: 20px; text-align: center; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .card { background: rgba(232, 84, 10, 0.15); border-radius: 8px; padding: 16px; }
+    .label { font-size: 12px; color: #666; }
+    .value { font-size: 22px; font-weight: bold; }
+    .section { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 15px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { text-align: left; padding: 6px; border-bottom: 1px solid #ccc; background: rgba(232, 84, 10, 0.12); }
+    td { padding: 6px; border-bottom: 1px solid #eee; }
+ 
+
+
+
+ *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'DM Sans',sans-serif;background:#f7f4f0;color:#2e2e2e;min-height:100vh}
+
+  .page{max-width:1100px;margin:0 auto;padding:52px 40px 80px}
+  .page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid #e8e4df}
+  h1{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:#0f0f0f;line-height:1}
+  h1 span{color:#e8540a}
+  .meta{font-size:11px;color:#5a5a5a;letter-spacing:.1em;text-transform:uppercase;text-align:right;line-height:1.8}
+
+  .table-wrapper{background:#fff;border:1px solid #e8e4df;box-shadow:0 2px 24px rgba(0,0,0,.06);overflow:hidden}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead tr{background:#0f0f0f}
+  th{padding:14px 20px;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#a8a8a8;text-align:left}
+  th:first-child,td:first-child{border-left:3px solid transparent;padding-left:17px}
+  th:first-child{border-left-color:#e8540a}
+
+
+form{
+    background:#fff;
+    border:1px solid #e8e4df;
+    box-shadow:0 2px 24px rgba(0,0,0,.06);
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+form p{
+    display:flex;
+    flex-direction:column;
+}
+
+form label{
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#5a5a5a;
+    margin-bottom:8px;
+}
+
+form input,
+form select,
+form textarea{
+    width:100%;
+    padding:14px 16px;
+    border:1px solid #d8d3cc;
+    background:#faf8f5;
+    font-size:14px;
+    color:#2e2e2e;
+    outline:none;
+    transition:.2s;
+}
+
+form input:focus,
+form select:focus,
+form textarea:focus{
+    border-color:#e8540a;
+    background:#fff;
+}
+
+form textarea{
+    resize:vertical;
+    min-height:120px;
+}
+
+form button{
+    background:#0f0f0f;
+    color:#fff;
+    border:none;
+    padding:14px 22px;
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:.2s;
+    align-self:flex-start;
+}
+
+form button:hover{
+    background:#e8540a;
+}
+
+.actions{
+    margin-bottom:25px;
+    display:flex;
+    gap:12px;
+}
+
+.btn-action{
+    background:#0f0f0f;
+    color:#fff;
+    text-decoration:none;
+    padding:14px 22px;
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    transition:.2s;
+}
+
+.btn-action:hover{
+    background:#e8540a;
+}

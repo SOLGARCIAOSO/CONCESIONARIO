@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="{% static 'gestion_usuarios/layout.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div id="barrasuperior">
+    <div class="marca">
+        <i data-lucide="car" style="width:20px;height:20px;"></i>
+        Sistema - Concesionario de carros
+    </div>
+
+    <nav>
+        <a href="#">Inventario</a>
+        <a href="#">Ventas</a>
+        <a href="#">Historial</a>
+        <a href="#">Facturacion</a>
+    </nav>
+
+    <div class="areausuario">
+        <i data-lucide="user-circle" style="width:22px;height:22px;color:#aaa;"></i>
+        Admin
+    </div>
+</div>
+
+<div id="contenedor">
+    <nav id="lateral">
+        <div class="titulo">Menú</div>
+        <ul>
+            <li><a href="/usuario/home/"><i data-lucide="users"></i> Todos los usuarios</a></li>
+            <li><a href="/usuario/nuevo_usuario/"><i data-lucide="user-plus"></i> Nuevo usuario</a></li>
+            <li><a href="/usuario/roles/"><i data-lucide="shield"></i> Roles</a></li>
+            <li><a href="/usuario/permisos/"><i data-lucide="key"></i> Permisos</a></li>
+        </ul>
+
+        <div class="salir">
+            <ul>
+                <li><a href="#"><i data-lucide="log-out"></i> Cerrar sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

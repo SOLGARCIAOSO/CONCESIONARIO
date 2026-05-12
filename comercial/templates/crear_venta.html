@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Nueva Venta
+{% endblock %}
+
+{% block content %}
+
+<div class="page">
+
+    <div class="page-header">
+        <h1>Nueva <span>Venta</span></h1>
+
+        <div class="meta">
+            Registro de Ventas
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+
+        <form method="POST"> 
+
+            {% csrf_token %}
+
+        <p>
+                <label>{{ form.id_venta.label }}</label>
+                {{ form.id_venta }}
+            </p>
+
+            <p>
+                <label>{{ form.vehiculo_id.label }}</label>
+                {{ form.vehiculo_id }}
+            </p>
+
+            <p>
+                <label>{{ form.cliente_id.label }}</label>
+                {{ form.cliente_id }}
+            </p>
+
+            <p>
+                <label>{{ form.vendedor_id.label }}</label>
+                {{ form.vendedor_id }}
+            </p>
+
+            <p>
+                <label>{{ form.fecha.label }}</label>
+                {{ form.fecha }}
+            </p>
+
+            <p>
+                <label>{{ form.precio.label }}</label>
+                {{ form.precio }}
+            </p>
+
+            <p>
+                <label>{{ form.total.label }}</label>
+                {{ form.total }}
+            </p>
+
+            <p>
+                <label>{{ form.estado.label }}</label>
+                {{ form.estado }}
+            </p>
+
+            <p>
+                <label>{{ form.num_factura.label }}</label>
+                {{ form.num_factura }}
+            </p>
+
+            <p>
+                <label>{{ form.tipo_de_pago.label }}</label>
+                {{ form.tipo_de_pago }}
+            </p>
+
+
+            <button type="submit">
+                Guardar
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

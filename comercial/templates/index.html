@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Inicio
+{% endblock %}
+
+{% block content %}
+
+
+  <title>Panel Comercial</title>
+ 
+
+  <div class="page">
+    <h1>PANEL COMERCIAL</h1>
+    <p class="subtitle">Resumen del sistema</p>
+
+    <div class="cards">
+      <div class="card">
+        <p class="label">Cotizaciones</p>
+        <p class="value">{{ total_cot }}</p>
+      </div>
+      <div class="card">
+        <p class="label">Reservas activas</p>
+        <p class="value">{{ total_res }}</p>
+      </div>
+      <div class="card">
+        <p class="label">Ventas</p>
+        <p class="value">{{ total_ven }}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+
+    <a href="{% url 'crear_cotizacion' %}" class="btn-action">
+        Crear Cotizacion
+    </a>
+
+    <a href="{% url 'crear_reserva' %}" class="btn-action">
+        Crear Reserva
+    </a>
+
+    <a href="{% url 'crear_venta' %}" class="btn-action">
+    Crear Venta
+   </a>
+
+</div>  
+
+    
+    <div class="section">
+      <h2>Cotizaciones recientes</h2>
+      <table>
+        <tr>
+          <th>ID</th><th>Vehiculo</th><th>Cliente</th><th>N° Cotizacion</th>
+          <th>Fecha creacion</th><th>Fecha vencimiento</th><th>Precio base</th><th>Total</th><th>Estado</th>
+        </tr>
+        {% for c in cotizaciones %}
+        <tr>
+          <td>{{ c.id_cotizacion }}</td>
+          <td>{{ c.vehiculo_id }}</td>
+          <td>{{ c.cliente_id }}</td>
+          <td>{{ c.num_cotizacion }}</td>
+          <td>{{ c.fecha_creacion }}</td>
+          <td>{{ c.fecha_vencimiento }}</td>
+          <td>${{ c.precio_base }}</td>
+          <td>${{ c.total }}</td>
+          <td>{{ c.estado }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9">Sin datos</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="section">
+      <h2>Reservas recientes</h2>
+      <table>
+        <tr>
+          <th>Vehiculo</th><th>Cliente</th><th>Fecha reserva</th>
+          <th>Monto apartado</th><th>Activa</th><th>Notas</th>
+        </tr>
+        {% for r in reservas %}
+        <tr>
+          <td>{{ r.vehiculo_id }}</td>
+          <td>{{ r.cliente_id }}</td>
+          <td>{{ r.fecha_reserva }}</td>
+          <td>${{ r.monto_apartado }}</td>
+          <td>{% if r.activa %}Sí{% else %}No{% endif %}</td>
+          <td>{{ r.notas|default:"Sin notas" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">Sin datos</td></tr>
+        {% endfor %}
+      </table>
+
+      <div class="section">
+  <h2>Ventas recientes</h2>
+  <table>
+    <tr>
+      <th>ID</th><th>Vehiculo</th><th>Cliente</th><th>Vendedor</th>
+      <th>Fecha</th><th>Precio</th><th>Total</th><th>Estado</th>
+      <th>N Factura</th><th>Tipo de pago</th>
+    </tr>
+    {% for v in ventas %}
+    <tr>
+      <td>{{ v.id_venta }}</td>
+      <td>{{ v.vehiculo_id }}</td>
+      <td>{{ v.cliente_id }}</td>
+      <td>{{ v.vendedor_id }}</td>
+      <td>{{ v.fecha }}</td>
+      <td>${{ v.precio }}</td>
+      <td>${{ v.total }}</td>
+      <td>{% if v.estado == 'Completada' %}Completada{% else %}Pendiente{% endif %}</td>
+      <td>{{ v.num_factura }}</td>
+      <td>{{ v.tipo_de_pago }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="10">Sin datos</td></tr>
+    {% endfor %}
+  </table>
+
+  </div>
+    </div>
+
+  </div>
+
+  {% endblock %}
+

@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gestion_usuarios/nuevo_usuario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+    <div class="encabezado">
+        <h1>Nuevo usuario</h1>
+        <a href="/usuario/home/" class="boton-editar">
+            <i data-lucide="arrow-left" style="width:13px;height:13px;"></i> Volver
+        </a>
+    </div>
+
+    <div class="contenedor-formulario">
+        <form method="POST" class="formulario-usuario">
+            {% csrf_token %}
+
+            <div class="grupo-campo">
+                <label>Nombre completo</label>
+                <input type="text" name="nombre" placeholder="Ingrese el nombre completo" required>
+            </div>
+
+            <div class="grupo-doble">
+                <div class="grupo-campo">
+                    <label>Tipo documento</label>
+                    <select name="tipo_documento" required>
+                        <option value="">Seleccione</option>
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="NIT">NIT</option>
+                        <option value="PAS">Pasaporte</option>
+                    </select>
+                </div>
+                <div class="grupo-campo">
+                    <label>Número documento</label>
+                    <input type="text" name="numero_documento" placeholder="Ingrese documento" required>
+                </div>
+            </div>
+
+            <div class="grupo-doble">
+                <div class="grupo-campo">
+                    <label>Teléfono</label>
+                    <input type="text" name="telefono" placeholder="Ingrese teléfono">
+                </div>
+                <div class="grupo-campo">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" placeholder="Ingrese dirección">
+                </div>
+            </div>
+
+            <div class="grupo-campo">
+                <label>Correo electrónico</label>
+                <input type="email" name="email" placeholder="Ingrese correo" required>
+            </div>
+
+            <div class="grupo-campo">
+                <label>Rol</label>
+                <select name="rol" required>
+                    <option value="">Seleccione un rol</option>
+                    {% for rol in formulario.fields.rol.queryset %}
+                    <option value="{{ rol.id }}">{{ rol.get_nombre_display }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="grupo-campo">
+                <label>Contraseña</label>
+                <input type="password" name="contrasena" placeholder="Ingrese contraseña" required>
+            </div>
+
+            <div class="grupo-campo checkbox-campo">
+                <label>
+                    <input type="checkbox" name="habilitado" checked> Usuario habilitado
+                </label>
+            </div>
+
+            <div class="acciones-formulario">
+                <button type="submit" class="boton-crear">
+                    <i data-lucide="save"></i> Guardar usuario
+                </button>
+                <a href="/usuario/home/" class="boton-eliminar">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
