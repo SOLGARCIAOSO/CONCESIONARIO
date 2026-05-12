@@ -1,0 +1,101 @@
+.contenedor-formulario {
+  max-width: 700px;
+}
+
+.formulario-card {
+  background: var(--blanco);
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  padding: 24px;
+  box-shadow: var(--sombra);
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+
+.grupo-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--subtexto);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+select,
+textarea {
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  padding: 8px 11px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--texto);
+  background: var(--blanco);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 3px rgba(249,115,22,.12);
+}
+input:disabled, select:disabled {
+  background: var(--fondo);
+  color: var(--subtexto);
+  cursor: not-allowed;
+}
+
+.checkbox-campo {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.checkbox-campo label {
+  font-size: 12.5px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.checkbox-campo input[type="checkbox"] {
+  width: 15px; height: 15px;
+  accent-color: var(--naranja);
+  cursor: pointer;
+}
+
+.acciones-formulario {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borde-claro);
+}
+
+.separador-seccion {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  padding: 10px 0 4px;
+  border-bottom: 1px solid var(--naranja-soft);
+  margin-bottom: 14px;
+}

@@ -1,0 +1,98 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}Clientes{% endblock %}
+{% block nav_clientes %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Clientes</h1>
+    <a class="btn btn-primario" href="/clientes-inventario/clientes/crear/">
+      <i data-lucide="user-plus"></i> Nuevo cliente
+    </a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mensaje-exito">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="GET" class="formulario-busqueda">
+    <div class="contenedor-busqueda">
+      <input type="text" name="q" placeholder="Buscar por nombre o documento..." value="{{ request.GET.q }}">
+      <button type="submit" class="btn btn-secundario">
+        <i data-lucide="search"></i> Buscar
+      </button>
+      {% if request.GET.q %}
+      <a href="/clientes-inventario/clientes/" class="btn btn-gris">
+        <i data-lucide="x"></i>
+      </a>
+      {% endif %}
+    </div>
+  </form>
+
+  {% if lista_clientes %}
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Documento</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in lista_clientes %}
+        <tr>
+          <td>
+            <div class="celda-usuario">
+              <div class="icono-avatar"><i data-lucide="user"></i></div>
+              {{ cliente.nombre }}
+            </div>
+          </td>
+          <td>{{ cliente.documento }}</td>
+          <td>{{ cliente.email }}</td>
+          <td>{{ cliente.telefono|default:"—" }}</td>
+          <td>
+            {% if cliente.activo %}
+              <span class="chip chip-verde"><i data-lucide="check-circle"></i> Activo</span>
+            {% else %}
+              <span class="chip chip-rojo"><i data-lucide="x-circle"></i> Inactivo</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="acciones-fila">
+              <a class="btn btn-secundario" href="/clientes-inventario/clientes/editar/{{ cliente.id }}/">
+                <i data-lucide="pencil"></i> Editar
+              </a>
+              <a class="btn btn-peligro" href="/clientes-inventario/clientes/eliminar/{{ cliente.id }}/">
+                <i data-lucide="trash-2"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="tabla-contenedor">
+      <div class="vacio">No hay clientes registrados.</div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

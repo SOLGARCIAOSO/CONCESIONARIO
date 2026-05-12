@@ -1,0 +1,58 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}Nueva Reserva{% endblock %}
+{% block nav_reservas %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/formulario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Nueva reserva</h1>
+    <a class="btn btn-secundario" href="/clientes-inventario/reservas/">
+      <i data-lucide="arrow-left"></i> Volver a reservas
+    </a>
+  </div>
+
+  <div class="contenedor-formulario">
+    <form method="POST" class="formulario-card">
+      {% csrf_token %}
+
+      <div class="separador-seccion">Selección</div>
+
+      <div class="grupo-campo">
+        <label>Cliente</label>
+        <select name="cliente" required>
+          <option value="">Seleccione un cliente...</option>
+          {% for cliente in clientes %}
+            <option value="{{ cliente.id }}">{{ cliente.nombre }} — {{ cliente.documento }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="grupo-campo">
+        <label>Vehículo</label>
+        <select name="vehiculo" required>
+          <option value="">Seleccione un vehículo...</option>
+          {% for vehiculo in vehiculos %}
+            <option value="{{ vehiculo.id }}">{{ vehiculo.marca }} {{ vehiculo.modelo }} — {{ vehiculo.placa }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="btn btn-primario">
+          <i data-lucide="calendar-check"></i> Crear reserva
+        </button>
+        <a href="/clientes-inventario/reservas/" class="btn btn-secundario">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

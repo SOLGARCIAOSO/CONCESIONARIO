@@ -1,0 +1,91 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}Inventario{% endblock %}
+{% block nav_inventario %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/inventario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Inventario vehicular</h1>
+    <a class="btn btn-primario" href="/clientes-inventario/vehiculos/crear/">
+      <i data-lucide="plus"></i> Agregar vehículo
+    </a>
+    <a class="btn btn-secundario" href="/clientes-inventario/clientes/">
+      <i data-lucide="users"></i> Ver clientes
+    </a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mensaje-exito">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="GET" class="filtros">
+    <input type="text" name="q" placeholder="Buscar por marca, modelo o placa..." value="{{ request.GET.q }}">
+    <select name="estado">
+      <option value="">Todos los estados</option>
+      <option value="DISPONIBLE" {% if request.GET.estado == 'DISPONIBLE' %}selected{% endif %}>Disponible</option>
+      <option value="RESERVADO"  {% if request.GET.estado == 'RESERVADO'  %}selected{% endif %}>Reservado</option>
+      <option value="VENDIDO"    {% if request.GET.estado == 'VENDIDO'    %}selected{% endif %}>Vendido</option>
+    </select>
+    <button type="submit" class="btn btn-secundario">
+      <i data-lucide="search"></i> Filtrar
+    </button>
+    {% if request.GET.q or request.GET.estado %}
+    <a href="/clientes-inventario/inventario/" class="btn btn-gris">
+      <i data-lucide="x"></i> Limpiar
+    </a>
+    {% endif %}
+  </form>
+
+  {% if vehiculos %}
+    {% for vehiculo in vehiculos %}
+    <div class="ficha-vehiculo">
+      <img class="ficha-img" src="{{ vehiculo.imagen }}" alt="{{ vehiculo.marca }} {{ vehiculo.modelo }}">
+      <div class="ficha-datos">
+        <div class="ficha-nombre">{{ vehiculo.marca }} {{ vehiculo.modelo }}</div>
+        <div class="dato-fila"><span class="dk">Año</span><span class="dv">{{ vehiculo.anio }}</span></div>
+        <div class="dato-fila"><span class="dk">Placa</span><span class="dv">{{ vehiculo.placa }}</span></div>
+        <div class="dato-fila"><span class="dk">Color</span><span class="dv">{{ vehiculo.color }}</span></div>
+        <div class="dato-fila"><span class="dk">Precio</span><span class="dv precio">${{ vehiculo.precio }}</span></div>
+        <div class="estado-bar">
+          {% if vehiculo.tiene_reserva %}
+            <div class="estado-linea naranja"></div>
+            <span class="chip chip-naranja"><i data-lucide="clock"></i> Reserva activa</span>
+          {% elif vehiculo.estado == 'VENDIDO' %}
+            <div class="estado-linea gris"></div>
+            <span class="chip chip-gris"><i data-lucide="x-circle"></i> Vendido</span>
+          {% else %}
+            <div class="estado-linea verde"></div>
+            <span class="chip chip-verde"><i data-lucide="check-circle"></i> Disponible</span>
+          {% endif %}
+        </div>
+        <div class="ficha-acciones">
+          <a class="btn btn-secundario" href="/clientes-inventario/vehiculos/editar/{{ vehiculo.id }}/">
+            <i data-lucide="pencil"></i> Editar
+          </a>
+          <a class="btn btn-peligro" href="/clientes-inventario/vehiculos/eliminar/{{ vehiculo.id }}/">
+            <i data-lucide="trash-2"></i> Eliminar
+          </a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="tabla-contenedor">
+      <div class="vacio">No hay vehículos registrados en el inventario.</div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

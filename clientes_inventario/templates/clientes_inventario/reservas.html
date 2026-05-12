@@ -1,0 +1,88 @@
+{% extends 'clientes_inventario/layout.html' %}
+{% load static %}
+
+{% block titulo %}Reservas{% endblock %}
+{% block nav_reservas %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes_inventario/reservas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Reservas</h1>
+    <a class="btn btn-primario" href="/clientes-inventario/reservas/crear/">
+      <i data-lucide="plus"></i> Nueva reserva
+    </a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mensaje-exito">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if lista_reservas %}
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Vehículo</th>
+          <th>Placa</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reserva in lista_reservas %}
+        <tr>
+          <td>
+            <div class="celda-usuario" style="display:flex;align-items:center;gap:8px;">
+              <div style="width:26px;height:26px;background:#fff4ed;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#f97316;flex-shrink:0;">
+                <i data-lucide="user" style="width:14px;height:14px;"></i>
+              </div>
+              {{ reserva.cliente.nombre }}
+            </div>
+          </td>
+          <td>{{ reserva.vehiculo.marca }} {{ reserva.vehiculo.modelo }}</td>
+          <td><code style="font-family:'DM Mono',monospace;font-size:12px;background:#f4f4f5;padding:2px 6px;border-radius:4px;">{{ reserva.vehiculo.placa }}</code></td>
+          <td>{{ reserva.fecha_reserva|date:"d/m/Y H:i" }}</td>
+          <td>
+            {% if reserva.activa %}
+              <span class="badge badge-activa"><i data-lucide="check-circle"></i> Activa</span>
+            {% else %}
+              <span class="badge badge-cancelada"><i data-lucide="x-circle"></i> Cancelada</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if reserva.activa %}
+            <form method="POST" action="/clientes-inventario/reservas/cancelar/{{ reserva.id }}/" style="display:inline;">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-peligro" onclick="return confirm('¿Cancelar esta reserva?')">
+                <i data-lucide="x"></i> Cancelar
+              </button>
+            </form>
+            {% else %}
+              <span style="color:#a1a1aa;font-size:12px;">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="tabla-contenedor">
+      <div class="vacio">No hay reservas registradas.</div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
