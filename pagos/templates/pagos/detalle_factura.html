@@ -1,0 +1,160 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}Factura {{ factura.numero_factura }}{% endblock %}
+{% block nav_facturas %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/detalle_factura.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Factura <span style="color:var(--naranja);">{{ factura.numero_factura }}</span></h1>
+    <a class="btn btn-primario" href="/pagos/pagos/crear/?factura={{ factura.id }}">
+      <i data-lucide="plus"></i> Registrar pago
+    </a>
+    <a class="btn btn-secundario" href="/pagos/facturas/">
+      <i data-lucide="arrow-left"></i> Volver
+    </a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mensaje-exito">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="detalle-grid">
+
+    <!-- Columna izquierda: datos + historial -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="card">
+        <div class="card-header">
+          <i data-lucide="file-text"></i> Datos de la factura
+        </div>
+        <div class="card-body">
+          <div class="dato-fila">
+            <span class="dk">N° Factura</span>
+            <span class="dv mono" style="color:var(--naranja);">{{ factura.numero_factura }}</span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Cliente</span>
+            <span class="dv">{{ factura.cliente }}</span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Vehículo</span>
+            <span class="dv">{{ factura.vehiculo }}</span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Fecha emisión</span>
+            <span class="dv">{{ factura.fecha_emision|date:"d/m/Y" }}</span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Estado</span>
+            <span class="dv">
+              {% if factura.estado == 'pagada' %}
+                <span class="chip chip-verde"><i data-lucide="check-circle"></i> Pagada</span>
+              {% else %}
+                <span class="chip chip-amarillo"><i data-lucide="clock"></i> Pendiente</span>
+              {% endif %}
+            </span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Total factura</span>
+            <span class="dv grande">$ {{ factura.total|floatformat:0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <i data-lucide="credit-card"></i> Historial de pagos
+        </div>
+        {% if pagos %}
+        <div class="card-body" style="padding:8px 16px;">
+          <div class="historial-pago">
+            {% for pago in pagos %}
+            <div class="pago-item">
+              <div class="pago-icono"><i data-lucide="check"></i></div>
+              <div class="pago-info">
+                <div class="pi-tipo">
+                  {% if pago.tipo_pago == 'contado' %}Contado{% else %}Financiación{% endif %}
+                </div>
+                <div class="pi-fecha">{{ pago.fecha|date:"d/m/Y" }}</div>
+              </div>
+              <div class="pago-monto">$ {{ pago.monto|floatformat:0 }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% else %}
+          <div class="vacio">No hay pagos registrados para esta factura.</div>
+        {% endif %}
+      </div>
+
+    </div>
+
+    <!-- Columna derecha: resumen financiero -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+
+      <div class="card">
+        <div class="card-header">
+          <i data-lucide="trending-up"></i> Estado financiero
+        </div>
+        <div class="card-body">
+          <div class="dato-fila">
+            <span class="dk">Total factura</span>
+            <span class="dv mono">$ {{ factura.total|floatformat:0 }}</span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Total pagado</span>
+            <span class="dv mono texto-verde">$ {{ total_pagado|floatformat:0 }}</span>
+          </div>
+          <div class="dato-fila">
+            <span class="dk">Saldo pendiente</span>
+            <span class="dv mono {% if saldo_pendiente > 0 %}texto-rojo{% else %}texto-verde{% endif %}">
+              $ {{ saldo_pendiente|floatformat:0 }}
+            </span>
+          </div>
+
+          <div class="barra-progreso-wrap">
+            <div class="bp-label">
+              <span>Progreso de pago</span>
+              <span>{{ porcentaje_pagado|floatformat:0 }}%</span>
+            </div>
+            <div class="barra-progreso">
+              <div class="bp-fill {% if porcentaje_pagado < 100 %}parcial{% endif %}"
+                   data-ancho="{{ porcentaje_pagado }}"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if factura.estado == 'pendiente' %}
+      <div class="card">
+        <div class="card-header">
+          <i data-lucide="zap"></i> Acciones rápidas
+        </div>
+        <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
+          <a class="btn btn-primario" href="/pagos/pagos/crear/?factura={{ factura.id }}" style="justify-content:center;">
+            <i data-lucide="plus"></i> Registrar pago
+          </a>
+          <a class="btn btn-verde" href="/pagos/facturas/{{ factura.id }}/marcar-pagada/" style="justify-content:center;">
+            <i data-lucide="check-circle"></i> Marcar como pagada
+          </a>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

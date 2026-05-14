@@ -1,0 +1,102 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}Facturas{% endblock %}
+{% block nav_facturas %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/facturas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Facturas</h1>
+    <a class="btn btn-primario" href="/pagos/facturas/crear/">
+      <i data-lucide="plus"></i> Nueva factura
+    </a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mensaje-exito">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="GET" class="filtros">
+    <input type="text" name="q" placeholder="Buscar por cliente, vehículo o N° factura..."
+           value="{{ request.GET.q }}">
+    <select name="estado">
+      <option value="">Todos los estados</option>
+      <option value="pendiente" {% if request.GET.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+      <option value="pagada"    {% if request.GET.estado == 'pagada'    %}selected{% endif %}>Pagada</option>
+    </select>
+    <button type="submit" class="btn btn-secundario">
+      <i data-lucide="search"></i> Filtrar
+    </button>
+    {% if request.GET.q or request.GET.estado %}
+    <a href="/pagos/facturas/" class="btn btn-gris">
+      <i data-lucide="x"></i> Limpiar
+    </a>
+    {% endif %}
+  </form>
+
+  {% if lista_facturas %}
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>N° Factura</th>
+          <th>Cliente</th>
+          <th>Vehículo</th>
+          <th>Fecha emisión</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for factura in lista_facturas %}
+        <tr>
+          <td><span class="num-factura">{{ factura.numero_factura }}</span></td>
+          <td>{{ factura.cliente }}</td>
+          <td>{{ factura.vehiculo }}</td>
+          <td>{{ factura.fecha_emision|date:"d/m/Y" }}</td>
+          <td><span class="monto-celda">$ {{ factura.total|floatformat:0 }}</span></td>
+          <td>
+            {% if factura.estado == 'pagada' %}
+              <span class="chip chip-verde"><i data-lucide="check-circle"></i> Pagada</span>
+            {% else %}
+              <span class="chip chip-amarillo"><i data-lucide="clock"></i> Pendiente</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="acciones-fila">
+              <a class="btn btn-secundario" href="/pagos/facturas/{{ factura.id }}/">
+                <i data-lucide="eye"></i> Ver
+              </a>
+              <a class="btn btn-secundario" href="/pagos/facturas/editar/{{ factura.id }}/">
+                <i data-lucide="pencil"></i>
+              </a>
+              <a class="btn btn-peligro" href="/pagos/facturas/eliminar/{{ factura.id }}/">
+                <i data-lucide="trash-2"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="tabla-contenedor">
+      <div class="vacio">No hay facturas registradas.</div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

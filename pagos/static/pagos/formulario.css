@@ -1,0 +1,87 @@
+.contenedor-formulario { max-width: 700px; }
+
+.formulario-card {
+  background: var(--blanco);
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  padding: 24px;
+  box-shadow: var(--sombra);
+}
+
+.separador-seccion {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--naranja);
+  padding: 10px 0 4px;
+  border-bottom: 1px solid var(--naranja-soft);
+  margin-bottom: 14px;
+}
+
+.grupo-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 14px;
+}
+.grupo-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--subtexto);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  padding: 8px 11px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--texto);
+  background: var(--blanco);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus, select:focus {
+  border-color: var(--naranja);
+  box-shadow: 0 0 0 3px rgba(249,115,22,.12);
+}
+input:disabled, select:disabled {
+  background: var(--fondo);
+  color: var(--subtexto);
+  cursor: not-allowed;
+}
+
+.acciones-formulario {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  padding-top: 16px;
+  border-top: 1px solid var(--borde-claro);
+}
+
+/* Info box para detalle factura */
+.info-box {
+  background: var(--naranja-soft);
+  border: 1px solid #fed7aa;
+  border-radius: var(--radio);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.info-box .ib-item { display: flex; flex-direction: column; gap: 2px; }
+.info-box .ib-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #c2410c; }
+.info-box .ib-valor { font-size: 13px; font-weight: 600; color: var(--texto); }
+.info-box .ib-valor.mono { font-family: 'DM Mono', monospace; }

@@ -1,0 +1,125 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}Resumen Pagos{% endblock %}
+{% block nav_home %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Resumen de facturación</h1>
+    <a class="btn btn-primario" href="/pagos/facturas/crear/">
+      <i data-lucide="plus"></i> Nueva factura
+    </a>
+  </div>
+
+  <div class="resumen">
+    <div class="tarjeta">
+      <div class="t-label">Total facturas</div>
+      <div class="t-valor">{{ total_facturas }}</div>
+      <div class="t-sub">emitidas</div>
+      <div class="t-icono"><i data-lucide="file-text"></i></div>
+    </div>
+    <div class="tarjeta verde">
+      <div class="t-label">Facturas pagadas</div>
+      <div class="t-valor">{{ facturas_pagadas }}</div>
+      <div class="t-sub">completadas</div>
+      <div class="t-icono"><i data-lucide="check-circle"></i></div>
+    </div>
+    <div class="tarjeta amarillo">
+      <div class="t-label">Pendientes</div>
+      <div class="t-valor">{{ facturas_pendientes }}</div>
+      <div class="t-sub">por cobrar</div>
+      <div class="t-icono"><i data-lucide="clock"></i></div>
+    </div>
+    <div class="tarjeta">
+      <div class="t-label">Total recaudado</div>
+      <div class="t-valor" style="font-size:1.3rem;">${{ total_recaudado|floatformat:0 }}</div>
+      <div class="t-sub">en pagos</div>
+      <div class="t-icono"><i data-lucide="trending-up"></i></div>
+    </div>
+  </div>
+
+  <div class="columnas">
+    <div class="panel">
+      <div class="panel-header">
+        <i data-lucide="file-text"></i> Últimas facturas
+        <a href="/pagos/facturas/" class="panel-link">Ver todas →</a>
+      </div>
+      {% if ultimas_facturas %}
+      <table>
+        <thead>
+          <tr>
+            <th>N° Factura</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in ultimas_facturas %}
+          <tr>
+            <td><span class="mono" style="color:var(--naranja);">{{ f.numero_factura }}</span></td>
+            <td>{{ f.cliente }}</td>
+            <td><span class="mono">$ {{ f.total|floatformat:0 }}</span></td>
+            <td>
+              {% if f.estado == 'pagada' %}
+                <span class="chip chip-verde"><i data-lucide="check-circle"></i> Pagada</span>
+              {% else %}
+                <span class="chip chip-amarillo"><i data-lucide="clock"></i> Pendiente</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="vacio">No hay facturas registradas.</div>
+      {% endif %}
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <i data-lucide="credit-card"></i> Últimos pagos
+        <a href="/pagos/pagos/" class="panel-link">Ver todos →</a>
+      </div>
+      {% if ultimos_pagos %}
+      <table>
+        <thead>
+          <tr>
+            <th>Factura</th>
+            <th>Monto</th>
+            <th>Tipo</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in ultimos_pagos %}
+          <tr>
+            <td><span class="mono" style="color:var(--naranja);">{{ p.factura.numero_factura }}</span></td>
+            <td><span class="mono">$ {{ p.monto|floatformat:0 }}</span></td>
+            <td>
+              {% if p.tipo_pago == 'contado' %}
+                <span class="chip chip-verde">Contado</span>
+              {% else %}
+                <span class="chip chip-naranja">Financiación</span>
+              {% endif %}
+            </td>
+            <td>{{ p.fecha|date:"d/m/Y" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <div class="vacio">No hay pagos registrados.</div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

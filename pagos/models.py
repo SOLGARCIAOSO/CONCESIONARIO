@@ -23,6 +23,21 @@ class Factura(models.Model):
         return f"Factura {self.numero_factura} - {self.cliente}"
 
 
+class PlanCuotas(models.Model):
+    """Plan de financiación asociado a una factura."""
+    factura = models.OneToOneField(
+        'Factura',
+        on_delete=models.CASCADE,
+        related_name='plan_cuotas'
+    )
+    numero_cuotas = models.PositiveIntegerField()
+    valor_cuota = models.DecimalField(max_digits=12, decimal_places=2)
+    fecha_creacion = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Plan {self.numero_cuotas} cuotas — {self.factura.numero_factura}"
+
+
 class Pago(models.Model):
 
     TIPO_PAGO = [

@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}Pagos{% endblock %} — Concesionario</title>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="{% static 'pagos/layout.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<div id="barrasuperior">
+  <div class="marca">
+    <i data-lucide="car" style="width:18px;height:18px;"></i>
+    Concesionario de Carros
+  </div>
+  <nav>
+    <a href="/clientes-inventario/home/">Inventario</a>
+    <a href="#">Ventas</a>
+    <a href="#">Historial</a>
+    <a href="/pagos/home/">Facturación</a>
+  </nav>
+  <div class="areausuario">
+    <i data-lucide="user-circle" style="width:20px;height:20px;"></i>
+    Admin
+  </div>
+</div>
+
+<div id="contenedor">
+
+  <nav id="lateral">
+    <div class="seccion-titulo">Pagos y Facturación</div>
+    <ul>
+      <li>
+        <a href="/pagos/home/" {% block nav_home %}{% endblock %}>
+          <i data-lucide="layout-dashboard"></i> Resumen
+        </a>
+      </li>
+      <li>
+        <a href="/pagos/facturas/" {% block nav_facturas %}{% endblock %}>
+          <i data-lucide="file-text"></i> Facturas
+        </a>
+      </li>
+      <li>
+        <a href="/pagos/pagos/" {% block nav_pagos %}{% endblock %}>
+          <i data-lucide="credit-card"></i> Pagos
+        </a>
+      </li>
+      <li>
+        <a href="/pagos/cuotas/" {% block nav_cuotas %}{% endblock %}>
+          <i data-lucide="calendar-range"></i> Cuotas
+        </a>
+      </li>
+    </ul>
+    <div class="salir">
+      <ul>
+        <li><a href="#"><i data-lucide="log-out"></i> Cerrar sesión</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  {% block content %}{% endblock %}
+
+</div>
+
+<script>lucide.createIcons();</script>
+<script>
+  document.querySelectorAll('[data-ancho]').forEach(function(el) {
+    el.style.width = el.getAttribute('data-ancho') + '%';
+  });
+</script>
+</body>
+</html>
