@@ -1,0 +1,92 @@
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.tarjeta {
+  background: var(--blanco);
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  padding: 18px 20px;
+  box-shadow: var(--sombra);
+  position: relative;
+  overflow: hidden;
+}
+.tarjeta::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--naranja);
+}
+.tarjeta.verde::before  { background: var(--verde); }
+.tarjeta.rojo::before   { background: var(--rojo); }
+.tarjeta.amarillo::before { background: var(--amarillo); }
+
+.tarjeta .t-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--subtexto);
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  margin-bottom: 8px;
+}
+.tarjeta .t-valor {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--naranja);
+  line-height: 1;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: -.02em;
+}
+.tarjeta.verde  .t-valor  { color: var(--verde); }
+.tarjeta.rojo   .t-valor  { color: var(--rojo); }
+.tarjeta.amarillo .t-valor { color: var(--amarillo); }
+.tarjeta .t-sub { font-size: 11px; color: var(--subtexto); margin-top: 4px; }
+.tarjeta .t-icono {
+  position: absolute;
+  right: 14px; top: 50%;
+  transform: translateY(-50%);
+  opacity: .07;
+  color: var(--naranja);
+}
+.tarjeta .t-icono svg { width: 52px; height: 52px; }
+
+.columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.panel {
+  background: var(--blanco);
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+}
+.panel-header {
+  background: #fafafa;
+  border-bottom: 1px solid var(--borde-claro);
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.panel-header svg { width: 14px; height: 14px; color: var(--naranja); }
+.panel-header .panel-link {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--naranja);
+  text-decoration: none;
+  font-weight: 500;
+}
+.panel-header .panel-link:hover { text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .resumen { grid-template-columns: repeat(2, 1fr); }
+  .columnas { grid-template-columns: 1fr; }
+}

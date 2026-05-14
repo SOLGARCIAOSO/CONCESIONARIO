@@ -1,0 +1,80 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}{% if factura %}Editar{% else %}Nueva{% endif %} Factura{% endblock %}
+{% block nav_facturas %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/formulario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>{% if factura %}Editar factura{% else %}Nueva factura{% endif %}</h1>
+    <a class="btn btn-secundario" href="/pagos/facturas/">
+      <i data-lucide="arrow-left"></i> Volver
+    </a>
+  </div>
+
+  <div class="contenedor-formulario">
+    <form method="POST" class="formulario-card">
+      {% csrf_token %}
+
+      <div class="separador-seccion">Datos de la factura</div>
+
+      <div class="grupo-doble">
+        <div class="grupo-campo">
+          <label>N° de factura</label>
+          <input type="text" name="numero_factura"
+                 value="{{ factura.numero_factura }}"
+                 placeholder="Ej: FAC-2024-001" required>
+        </div>
+        <div class="grupo-campo">
+          <label>Estado</label>
+          <select name="estado">
+            <option value="pendiente" {% if not factura or factura.estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+            <option value="pagada" {% if factura.estado == 'pagada' %}selected{% endif %}>Pagada</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="separador-seccion">Cliente y vehículo</div>
+
+      <div class="grupo-campo">
+        <label>Cliente</label>
+        <input type="text" name="cliente"
+               value="{{ factura.cliente }}"
+               placeholder="Nombre del cliente" required>
+      </div>
+
+      <div class="grupo-campo">
+        <label>Vehículo</label>
+        <input type="text" name="vehiculo"
+               value="{{ factura.vehiculo }}"
+               placeholder="Ej: Toyota Corolla 2023" required>
+      </div>
+
+      <div class="separador-seccion">Valor</div>
+
+      <div class="grupo-campo">
+        <label>Total (COP)</label>
+        <input type="number" name="total"
+               value="{{ factura.total }}"
+               placeholder="Ej: 45000000" min="0" step="1000" required>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="btn btn-primario">
+          <i data-lucide="save"></i>
+          {% if factura %}Guardar cambios{% else %}Crear factura{% endif %}
+        </button>
+        <a href="/pagos/facturas/" class="btn btn-secundario">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+{% endblock %}

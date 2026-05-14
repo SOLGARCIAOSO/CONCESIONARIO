@@ -1,0 +1,98 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}Pagos{% endblock %}
+{% block nav_pagos %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/facturas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>Pagos registrados</h1>
+    <a class="btn btn-primario" href="/pagos/pagos/crear/">
+      <i data-lucide="plus"></i> Registrar pago
+    </a>
+  </div>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mensaje-exito">
+        <i data-lucide="check-circle" style="width:15px;height:15px;"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="GET" class="filtros">
+    <select name="tipo">
+      <option value="">Todos los tipos</option>
+      <option value="contado"      {% if request.GET.tipo == 'contado'      %}selected{% endif %}>Contado</option>
+      <option value="financiacion" {% if request.GET.tipo == 'financiacion' %}selected{% endif %}>Financiación</option>
+    </select>
+    <button type="submit" class="btn btn-secundario">
+      <i data-lucide="search"></i> Filtrar
+    </button>
+    {% if request.GET.tipo %}
+    <a href="/pagos/pagos/" class="btn btn-gris"><i data-lucide="x"></i> Limpiar</a>
+    {% endif %}
+  </form>
+
+  {% if lista_pagos %}
+  <div class="tabla-contenedor">
+    <table>
+      <thead>
+        <tr>
+          <th>N° Factura</th>
+          <th>Cliente</th>
+          <th>Monto</th>
+          <th>Tipo de pago</th>
+          <th>Fecha</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for pago in lista_pagos %}
+        <tr>
+          <td>
+            <a href="/pagos/facturas/{{ pago.factura.id }}/"
+               style="text-decoration:none;">
+              <span class="num-factura">{{ pago.factura.numero_factura }}</span>
+            </a>
+          </td>
+          <td>{{ pago.factura.cliente }}</td>
+          <td><span class="monto-celda">$ {{ pago.monto|floatformat:0 }}</span></td>
+          <td>
+            {% if pago.tipo_pago == 'contado' %}
+              <span class="chip chip-verde"><i data-lucide="banknote"></i> Contado</span>
+            {% else %}
+              <span class="chip chip-naranja"><i data-lucide="calendar-range"></i> Financiación</span>
+            {% endif %}
+          </td>
+          <td>{{ pago.fecha|date:"d/m/Y" }}</td>
+          <td>
+            <div class="acciones-fila">
+              <a class="btn btn-secundario" href="/pagos/pagos/editar/{{ pago.id }}/">
+                <i data-lucide="pencil"></i>
+              </a>
+              <a class="btn btn-peligro" href="/pagos/pagos/eliminar/{{ pago.id }}/">
+                <i data-lucide="trash-2"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="tabla-contenedor">
+      <div class="vacio">No hay pagos registrados.</div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

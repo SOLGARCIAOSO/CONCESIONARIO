@@ -1,0 +1,318 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}{% if pago %}Editar{% else %}Registrar{% endif %} Pago{% endblock %}
+{% block nav_pagos %}class="activo"{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/formulario.css' %}">
+<style>
+.modo-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--borde-claro);
+  border-radius: var(--radio);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.modo-tab {
+  flex: 1;
+  padding: 9px 14px;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: var(--blanco);
+  color: var(--subtexto);
+  transition: all .15s;
+  text-align: center;
+}
+.modo-tab:first-child { border-right: 1px solid var(--borde-claro); }
+.modo-tab.activo {
+  background: var(--naranja);
+  color: #fff;
+}
+.bloque-plan {
+  background: var(--naranja-soft);
+  border: 1px solid #fbd0b3;
+  border-radius: var(--radio);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.bloque-plan .plan-titulo {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--naranja);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+}
+.valor-cuota-preview {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--blanco);
+  border: 1px solid #fbd0b3;
+  border-radius: var(--radio);
+  font-size: 12.5px;
+  color: var(--texto);
+  display: none;
+}
+.valor-cuota-preview strong {
+  font-family: 'DM Mono', monospace;
+  color: var(--naranja);
+  font-size: 1.1rem;
+}
+.plan-existente-info {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radio);
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #15803d;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+#bloque-financiacion { display: none; }
+#bloque-manual { display: block; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+
+  <div class="encabezado">
+    <h1>{% if pago %}Editar pago{% else %}Registrar pago{% endif %}</h1>
+    <a class="btn btn-secundario" href="/pagos/pagos/">
+      <i data-lucide="arrow-left"></i> Volver
+    </a>
+  </div>
+
+  <div class="contenedor-formulario">
+    <form method="POST" class="formulario-card" id="form-pago">
+      {% csrf_token %}
+      <input type="hidden" name="modo_cuota" id="input-modo-cuota" value="manual">
+
+      {% if factura_preseleccionada %}
+      <div class="info-box">
+        <div class="ib-item">
+          <span class="ib-label">Factura</span>
+          <span class="ib-valor mono">{{ factura_preseleccionada.numero_factura }}</span>
+        </div>
+        <div class="ib-item">
+          <span class="ib-label">Cliente</span>
+          <span class="ib-valor">{{ factura_preseleccionada.cliente }}</span>
+        </div>
+        <div class="ib-item">
+          <span class="ib-label">Saldo pendiente</span>
+          <span class="ib-valor mono">$ {{ saldo_pendiente|floatformat:0 }}</span>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="separador-seccion">Datos del pago</div>
+
+      <div class="grupo-campo">
+        <label>Factura</label>
+        <select name="factura" id="select-factura" required>
+          <option value="">Seleccione una factura...</option>
+          {% for f in facturas %}
+            <option value="{{ f.id }}"
+              data-saldo="{{ f.total }}"
+              {% if pago.factura.id == f.id or factura_preseleccionada.id == f.id %}selected{% endif %}>
+              {{ f.numero_factura }} — {{ f.cliente }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="grupo-campo">
+        <label>Tipo de pago</label>
+        <select name="tipo_pago" id="select-tipo" required>
+          <option value="">Seleccione...</option>
+          <option value="contado"
+            {% if pago.tipo_pago == 'contado' %}selected{% endif %}>
+            Contado
+          </option>
+          <option value="financiacion"
+            {% if pago.tipo_pago == 'financiacion' %}selected{% endif %}>
+            Financiación
+          </option>
+        </select>
+      </div>
+
+      <!-- ── BLOQUE FINANCIACIÓN ───────────────────────────────────── -->
+      <div id="bloque-financiacion">
+
+        {% if plan_existente %}
+        <div class="plan-existente-info">
+          <i data-lucide="info" style="width:14px;height:14px;flex-shrink:0;"></i>
+          Esta factura ya tiene un plan de
+          <strong>{{ plan_existente.numero_cuotas }} cuotas</strong>
+          de <strong>$ {{ plan_existente.valor_cuota|floatformat:0 }}</strong> c/u.
+          Puedes pagar la siguiente cuota o crear un nuevo plan.
+        </div>
+        {% endif %}
+
+        <div class="modo-tabs">
+          <button type="button" class="modo-tab activo" id="tab-plan"
+                  onclick="setModo('plan')">
+            <i data-lucide="calendar-range" style="width:13px;height:13px;"></i>
+            Crear plan de cuotas
+          </button>
+          <button type="button" class="modo-tab" id="tab-manual"
+                  onclick="setModo('manual-fin')">
+            <i data-lucide="pencil" style="width:13px;height:13px;"></i>
+            Ingresar monto manualmente
+          </button>
+        </div>
+
+        <!-- Plan automático -->
+        <div id="sub-plan" class="bloque-plan">
+          <div class="plan-titulo">
+            <i data-lucide="calculator" style="width:12px;height:12px;"></i>
+            Configurar plan
+          </div>
+          <div class="grupo-campo" style="margin-bottom:0;">
+            <label>Número de cuotas</label>
+            <input type="number" id="input-num-cuotas" name="numero_cuotas"
+                   min="1" max="120" step="1" placeholder="Ej: 12"
+                   oninput="calcularCuota()">
+          </div>
+          <div class="valor-cuota-preview" id="preview-cuota">
+            Valor por cuota: <strong id="valor-cuota-txt">—</strong>
+            <span style="color:var(--subtexto);font-size:11px;margin-left:6px;">
+              (se registra la 1ª cuota al guardar)
+            </span>
+          </div>
+        </div>
+
+        <!-- Manual dentro de financiación -->
+        <div id="sub-manual-fin" style="display:none;">
+          <div class="grupo-campo">
+            <label>Monto de esta cuota (COP)</label>
+            <input type="number" id="monto-fin" name="monto_fin"
+                   placeholder="Ej: 5000000" min="1" step="1">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── BLOQUE CONTADO ────────────────────────────────────────── -->
+      <div id="bloque-manual">
+        <div class="grupo-campo">
+          <label>Monto (COP)</label>
+          <input type="number" name="monto" id="monto-contado"
+                 value="{{ pago.monto }}"
+                 placeholder="Ej: 45000000" min="1" step="1">
+        </div>
+      </div>
+
+      <div class="acciones-formulario">
+        <button type="submit" class="btn btn-primario">
+          <i data-lucide="save"></i>
+          {% if pago %}Guardar cambios{% else %}Registrar pago{% endif %}
+        </button>
+        <a href="/pagos/pagos/" class="btn btn-secundario">Cancelar</a>
+      </div>
+
+    </form>
+  </div>
+
+</div>
+
+<script>
+  // Saldo de la factura seleccionada (para preview de cuota)
+  const optInicial = selectFact.options[selectFact.selectedIndex];
+    let saldoActual = parseFloat(optInicial?.getAttribute('data-saldo')) || 0;
+
+  const selectFact  = document.getElementById('select-factura');
+  const selectTipo  = document.getElementById('select-tipo');
+  const bloqueF     = document.getElementById('bloque-financiacion');
+  const bloqueM     = document.getElementById('bloque-manual');
+  const inputModo   = document.getElementById('input-modo-cuota');
+  const montoContado = document.getElementById('monto-contado');
+
+  // Actualizar saldo cuando cambia la factura
+  selectFact.addEventListener('change', function () {
+    const opt = this.options[this.selectedIndex];
+    saldoActual = parseFloat(opt.getAttribute('data-saldo')) || 0;
+    calcularCuota();
+  });
+
+  // Mostrar/ocultar bloques según tipo de pago
+  selectTipo.addEventListener('change', function () {
+    const val = this.value;
+    if (val === 'financiacion') {
+      bloqueF.style.display = 'block';
+      bloqueM.style.display = 'none';
+      montoContado.removeAttribute('required');
+      setModo('plan');
+    } else {
+      bloqueF.style.display = 'none';
+      bloqueM.style.display = 'block';
+      montoContado.setAttribute('required', 'required');
+      inputModo.value = 'manual';
+    }
+  });
+
+  // Tabs dentro de financiación
+  function setModo(modo) {
+    const subPlan      = document.getElementById('sub-plan');
+    const subManualFin = document.getElementById('sub-manual-fin');
+    const tabPlan      = document.getElementById('tab-plan');
+    const tabManual    = document.getElementById('tab-manual');
+    const montoFin     = document.getElementById('monto-fin');
+    const numCuotas    = document.getElementById('input-num-cuotas');
+
+    if (modo === 'plan') {
+      subPlan.style.display      = 'block';
+      subManualFin.style.display = 'none';
+      tabPlan.classList.add('activo');
+      tabManual.classList.remove('activo');
+      inputModo.value = 'plan';
+      montoFin.removeAttribute('required');
+      numCuotas.setAttribute('required', 'required');
+    } else {
+      subPlan.style.display      = 'none';
+      subManualFin.style.display = 'block';
+      tabPlan.classList.remove('activo');
+      tabManual.classList.add('activo');
+      inputModo.value = 'manual';
+      montoFin.setAttribute('required', 'required');
+      numCuotas.removeAttribute('required');
+    }
+  }
+
+  // Preview valor por cuota
+  function calcularCuota() {
+    const n       = parseInt(document.getElementById('input-num-cuotas').value);
+    const preview = document.getElementById('preview-cuota');
+    const txt     = document.getElementById('valor-cuota-txt');
+
+    if (n > 0 && saldoActual > 0) {
+      const vc = Math.round(saldoActual / n);
+      txt.textContent = '$ ' + vc.toLocaleString('es-CO');
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+    }
+  }
+
+  // Al enviar: copiar monto manual de financiación al campo "monto" si aplica
+  document.getElementById('form-pago').addEventListener('submit', function () {
+    const modo = inputModo.value;
+    if (modo === 'manual') {
+      const montoFin = document.getElementById('monto-fin');
+      if (montoFin && montoFin.value) {
+        montoContado.value = montoFin.value;
+      }
+    }
+  });
+
+  // Inicializar según tipo preseleccionado
+  selectTipo.dispatchEvent(new Event('change'));
+</script>
+{% endblock %}

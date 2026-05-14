@@ -1,0 +1,29 @@
+{% extends 'pagos/layout.html' %}
+{% load static %}
+
+{% block titulo %}Confirmar eliminación{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/confirmar_eliminar.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="principal">
+  <div class="caja-eliminar">
+    <div class="icono-alerta">
+      <i data-lucide="alert-triangle"></i>
+    </div>
+    <h1>Confirmar eliminación</h1>
+    <p>¿Está seguro de eliminar <strong>{{ objeto }}</strong>? Esta acción no se puede deshacer.</p>
+    <form method="POST">
+      {% csrf_token %}
+      <div style="display:flex;gap:10px;">
+        <button type="submit" class="btn btn-peligro">
+          <i data-lucide="trash-2"></i> Sí, eliminar
+        </button>
+        <a class="btn btn-secundario" href="{{ volver_url }}">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
